@@ -9,7 +9,7 @@
     "start": "node app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Fernando Colmenarez",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
