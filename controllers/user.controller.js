@@ -65,17 +65,25 @@ const usersPut = async (req = request, res = response) => {
     res.status(200).json(data);
 };
 
-const usersDelete = (req = request, res = response) => {
+const usersDelete = async (req = request, res = response) => {
 
     const {id} = req.params;
 
+    const uid = req.uid;
+
     // delete in bd only example
 
-    const user =  User.findByIdAndDelete( id);
-    res.json({
-        status: 200,
-        user
-    });
+    const user = await User.findByIdAndUpdate(id, {status: false});
+    // obtener el usuario autenticado
+    const authenticatedUser=req.userAuth;
+
+    if (!user) {
+        return res.status(400).json({
+            message: `Can't Delete this user Id ${id}`
+        });
+    }
+
+    res.status(200).json({user, authenticatedUser});
 };
 
 module.exports = {

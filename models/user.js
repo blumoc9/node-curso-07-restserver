@@ -35,7 +35,8 @@ const UserSchema = Schema({
 
 // In this case we need can't send the password and version,
 UserSchema.methods.toJSON = function () {
-    const { __v, password, ...users} = this.toObject();
+    const { __v, password,_id, ...users} = this.toObject();
+    users.uid = _id;
     return users;
 }
 

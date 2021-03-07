@@ -1,7 +1,12 @@
 const {check} = require("express-validator");
 
 const {isValidRole,isValidEmail,existUserById} = require("../helpers/db-validators");
-const {validateFields} = require("../middlewares/validateFields");
+const {
+    validateJWT,
+    isAdminRole,
+    hasRoles,
+    validateFields
+} = require("../middlewares");
 
 const {
     usersGet,
@@ -32,7 +37,9 @@ middlewaresPut.push(check('role').custom(isValidRole));
 middlewaresPut.push(validateFields);
 
 //Delete Middlewares
-
+middlewaresDelete.push(validateJWT);
+middlewaresDelete.push(hasRoles(['ADMIN_ROLE','SALES_ROLE']));
+//middlewaresDelete.push(isAdminRole);
 middlewaresDelete.push(check('id').isMongoId());
 middlewaresDelete.push(check('id').custom(existUserById))
 middlewaresDelete.push(validateFields);
