@@ -1,3 +1,5 @@
+const {getCategories} = require("../controllers/category.controller");
+const {existCategoryById} = require("../helpers/db-validators");
 const {check} = require("express-validator");
 const { response, Router } = require('express');
 
@@ -15,6 +17,11 @@ const middlewaresPut = [];
 const middlewaresPost = [];
 const middlewaresDelete = [];
 
+middlewaresGet.push(validateJWT);
+/*middlewaresGet.push(check('id').isMongoId());
+middlewaresGet.push(check('id').custom(existCategoryById));*/
+middlewaresGet.push(validateFields);
+
 
 //
 middlewaresPost.push(validateJWT);
@@ -29,11 +36,7 @@ middlewareCategory.push(validateFields);
 
 // Path  , Middlewares, Controller
 
-router.get('/', ((req, res = response) => {
-    res.status(200).json({
-        message: 'OK'
-    });
-}));
+router.get('/', middlewaresGet, getCategories)
 
 // obtener una categoria por id- publico
 router.get('/:id', ((req, res = response) => {

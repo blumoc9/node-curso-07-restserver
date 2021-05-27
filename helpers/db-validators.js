@@ -2,6 +2,7 @@ const {request, response} = require('express');
 
 const Role = require('../models/role');
 const User = require('../models/user');
+const {Category} = require("../models");
 
 
 const isValidRole = async (role = '') => {
@@ -27,7 +28,15 @@ const existUserById = async(id)=>{
         throw new Error(`The id: ${id} doesn's exist`);
     }
 }
+
+const existCategoryById = async(id)=>{
+    const existCategory =  await Category.findById(id);
+    if(!existCategory){
+        throw new Error(`The id: ${id} doesn's exist`);
+    }
+}
+
 module.exports = {
-    isValidRole,isValidEmail,existUserById
+    isValidRole,isValidEmail,existUserById,existCategoryById
 }
 
